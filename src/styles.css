@@ -119,13 +119,13 @@
 
 .card {
   display: flex;
+  position: absolute;
   font-size: 0.8em;
   padding: 3px;
   flex-direction: column;
   border: 1px solid #696969;
   cursor: pointer;
-  border-radius: 3px;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25); }
+  border-radius: 3px; }
   @media screen and (max-width: 1100px) {
     .card {
       min-width: 180px; } }

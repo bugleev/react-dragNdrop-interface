@@ -2,6 +2,7 @@
   "cards": [
     {
       "id": "card_1",
+      "category": "1",
       "data": {
         "link": "Link 1",
         "number": "2341",
@@ -12,6 +13,7 @@
     },
     {
       "id": "card_2",
+      "category": "1",
       "data": {
         "link": "Link 2",
         "number": "2355",
@@ -22,6 +24,7 @@
     },
     {
       "id": "card_3",
+      "category": "1",
       "data": {
         "link": "Link 141",
         "number": "234",
@@ -32,6 +35,7 @@
     },
     {
       "id": "card_4",
+      "category": "1",
       "data": {
         "link": "Link 131",
         "number": "666",
@@ -42,6 +46,7 @@
     },
     {
       "id": "card_5",
+      "category": "1",
       "data": {
         "link": "Link 32",
         "number": "1241414",
@@ -52,6 +57,7 @@
     },
     {
       "id": "card_6",
+      "category": "2",
       "data": {
         "link": "Link 90",
         "number": "67996",
@@ -62,6 +68,7 @@
     },
     {
       "id": "card_7",
+      "category": "3",
       "data": {
         "link": "Link 444",
         "number": "87654",
@@ -72,6 +79,7 @@
     },
     {
       "id": "card_8",
+      "category": "4",
       "data": {
         "link": "Link 532",
         "number": "6534",
@@ -82,6 +90,7 @@
     },
     {
       "id": "card_9",
+      "category": "4",
       "data": {
         "link": "Link 2345",
         "number": "67",
@@ -92,6 +101,7 @@
     },
     {
       "id": "card_10",
+      "category": "4",
       "data": {
         "link": "Link 14351",
         "number": "113",
