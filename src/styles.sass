@@ -24,6 +24,8 @@ $break-small: 610px;
     flex: 1 1 250px
     justify-content: flex-start
     align-items: center
+    & > div
+      width: 100%     
     @media screen and (max-width: $break-large)
       overflow-x: auto 
       min-height: 0px
@@ -115,13 +117,13 @@ $break-small: 610px;
   font-size: 0.8em
   padding: 3px
   flex-direction: column
+  background-color: #FEFEFE
   border: 1px solid #696969
   cursor: pointer
   border-radius: 3px  
   @media screen and (max-width: $break-large) 
     min-width: 180px 
-  >*
-    background-color: #FEFEFE
+  >*    
     padding: 0.2em
     border-bottom: 1px solid #333
   .card--link

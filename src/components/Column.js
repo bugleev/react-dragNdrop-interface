@@ -1,28 +1,75 @@
-import * as React from "react";
+import React from "react";
 import Card from "./Card";
 import { Subscribe } from "react-contextual";
 import { store } from "../containers/Store";
+import { uiState } from "../containers/UIState";
 
 export default class Column extends React.Component {
+  state = {
+    order: []
+  };
+  shouldComponentUpdate() {
+    console.log("should?");
+    return true;
+  }
+
+  componentWillUpdate() {
+    console.log("updatie?");
+  }
+
+  componentDidMount() {
+    const remoteState = store.getState();
+    const cardOrder = remoteState.cards.filter(
+      el => el.category === this.props.category
+    );
+    console.log(cardOrder);
+    this.setState({ order: cardOrder });
+  }
+  handleMouseMove = ({ pageY }) => {
+    const clamp = (n, min, max) => Math.max(Math.min(n, max), min);
+    const reinsert = (arr, from, to) => {
+      const _arr = arr.slice(0);
+      const val = _arr[from];
+      _arr.splice(from, 1);
+      _arr.splice(to, 0, val);
+      return _arr;
+    };
+
+    const remoteUi = uiState.getState();
+    if (remoteUi.isPressed) {
+      const currentRow = clamp(
+        Math.round((pageY - remoteUi.initialDeltaY) / 165),
+        0,
+        this.state.order.length - 1
+      );
+      let newOrder = this.state.order;
+      if (currentRow !== this.state.order.indexOf(remoteUi.pos)) {
+        newOrder = reinsert(
+          this.state.order,
+          this.state.order.indexOf(remoteUi.pos),
+          currentRow
+        );
+      }
+    }
+  };
   render() {
-    const { category } = this.props;
-    let count = 0;
+    const { order } = this.state;
+    console.log("rendered");
     return (
-      <Subscribe to={store} select={props => ({ cards: props.cards })}>
+      <Subscribe to={uiState}>
         {props => (
-          <div className="column">
+          <div
+            className="column"
+            style={{ userSelect: props.isPressed ? "none" : "auto" }}
+            onMouseMove={this.handleMouseMove}
+          >
             <p className="field-text">
               {this.props.name}
-              <span>
-                ({props.cards.filter(el => el.category === category).length})
-              </span>
+              <span>({order.length})</span>
             </p>
-            {props.cards.map((el, i) => {
-              return el.category === category
-                ? (count++,
-                  <Card key={i} data={el.data} id={el.id} yOrder={count} />)
-                : null;
-            })}
+            <div>
+              {order.map((el, i) => <Card key={i} cardInfo={el} yOrder={i} />)}
+            </div>
           </div>
         )}
       </Subscribe>

@@ -21,6 +21,8 @@
     flex: 1 1 250px;
     justify-content: flex-start;
     align-items: center; }
+    .container .column > div {
+      width: 100%; }
     @media screen and (max-width: 1100px) {
       .container .column {
         overflow-x: auto;
@@ -123,6 +125,7 @@
   font-size: 0.8em;
   padding: 3px;
   flex-direction: column;
+  background-color: #FEFEFE;
   border: 1px solid #696969;
   cursor: pointer;
   border-radius: 3px; }
@@ -130,7 +133,6 @@
     .card {
       min-width: 180px; } }
   .card > * {
-    background-color: #FEFEFE;
     padding: 0.2em;
     border-bottom: 1px solid #333; }
   .card .card--link a {
