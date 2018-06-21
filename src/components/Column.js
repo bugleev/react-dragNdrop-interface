@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "./Card";
+import Card, { UICard } from "./Card";
 import { Subscribe } from "react-contextual";
 import { store } from "../containers/Store";
 import { uiState } from "../containers/UIState";
@@ -8,8 +8,10 @@ export default class Column extends React.Component {
   state = {
     order: []
   };
-
-  componentWillUpdate() {}
+  shouldComponentUpdate(prevState, nextProps) {
+    console.log(prevState, nextProps);
+    return true;
+  }
 
   componentDidMount() {
     const remoteState = store.getState();
@@ -44,9 +46,9 @@ export default class Column extends React.Component {
           this.state.order.indexOf(remoteUi.pos),
           currentRow
         );
+        this.setState({ order: newOrder });
       }
       uiState.getState().updateY(mouseY);
-      this.setState({ order: newOrder });
     }
   };
   render() {
@@ -57,8 +59,9 @@ export default class Column extends React.Component {
           {this.props.name}
           <span>({order.length})</span>
         </p>
+
         <div>
-          {order.map((el, i) => <Card key={i} cardInfo={el} yOrder={i} />)}
+          {order.map((el, i) => <UICard key={i} cardInfo={el} yOrder={i} />)}
         </div>
       </div>
     );
