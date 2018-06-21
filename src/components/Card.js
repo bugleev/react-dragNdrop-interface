@@ -34,7 +34,7 @@ class Card extends React.PureComponent {
 
           return (
             <React.Fragment>
-              <Spring native to={style}>
+              <Spring native to={style} immediate={active}>
                 {({ y, shadow, scale }) => (
                   <animated.div
                     className="draggable card"
