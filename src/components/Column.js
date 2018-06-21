@@ -8,14 +8,8 @@ export default class Column extends React.Component {
   state = {
     order: []
   };
-  shouldComponentUpdate() {
-    console.log("should?");
-    return true;
-  }
 
-  componentWillUpdate() {
-    console.log("updatie?");
-  }
+  componentWillUpdate() {}
 
   componentDidMount() {
     const remoteState = store.getState();
@@ -36,13 +30,14 @@ export default class Column extends React.Component {
     };
 
     const remoteUi = uiState.getState();
+    const mouseY = pageY - remoteUi.initialDeltaY;
+    let newOrder = this.state.order;
     if (remoteUi.isPressed) {
       const currentRow = clamp(
         Math.round((pageY - remoteUi.initialDeltaY) / 165),
         0,
         this.state.order.length - 1
       );
-      let newOrder = this.state.order;
       if (currentRow !== this.state.order.indexOf(remoteUi.pos)) {
         newOrder = reinsert(
           this.state.order,
@@ -51,6 +46,8 @@ export default class Column extends React.Component {
         );
       }
     }
+    uiState.getState().updateY(mouseY);
+    this.setState({ order: newOrder });
   };
   render() {
     const { order } = this.state;

@@ -13,14 +13,8 @@ const Layout = props => {
 };
 
 class App extends React.Component {
-  handleCardClick = ev => {
-    const modalData = this.pickCard(ev.currentTarget.id)[0];
-    this.setState({ modalOpen: true, modalData });
-  };
-  componentDidMount() {
-    window.addEventListener("touchend", this.handleMouseUp);
-    window.addEventListener("mouseup", this.handleMouseUp);
-  }
+  handleCardClick = ev => {};
+  componentDidMount() {}
 
   render() {
     return (
