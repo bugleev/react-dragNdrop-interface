@@ -30,8 +30,8 @@ export default class Column extends React.Component {
     };
 
     const remoteUi = uiState.getState();
-    const mouseY = pageY - remoteUi.initialDeltaY;
     if (remoteUi.isPressed) {
+      const mouseY = pageY - remoteUi.initialDeltaY;
       const currentRow = clamp(
         Math.round((pageY - remoteUi.initialDeltaY) / 165),
         0,
@@ -52,23 +52,15 @@ export default class Column extends React.Component {
   render() {
     const { order } = this.state;
     return (
-      <Subscribe to={uiState}>
-        {props => (
-          <div
-            className="column"
-            style={{ userSelect: props.isPressed ? "none" : "auto" }}
-            onMouseMove={this.handleMouseMove}
-          >
-            <p className="field-text">
-              {this.props.name}
-              <span>({order.length})</span>
-            </p>
-            <div>
-              {order.map((el, i) => <Card key={i} cardInfo={el} yOrder={i} />)}
-            </div>
-          </div>
-        )}
-      </Subscribe>
+      <div className="column" onMouseMove={this.handleMouseMove}>
+        <p className="field-text">
+          {this.props.name}
+          <span>({order.length})</span>
+        </p>
+        <div>
+          {order.map((el, i) => <Card key={i} cardInfo={el} yOrder={i} />)}
+        </div>
+      </div>
     );
   }
 }

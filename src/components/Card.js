@@ -6,6 +6,7 @@ import { uiState } from "../containers/UIState";
 
 class Card extends React.PureComponent {
   render() {
+    console.log("rendered", this.props.cardInfo.id);
     const { cardInfo, yOrder } = this.props;
     const { data, id } = cardInfo;
     return (
@@ -34,7 +35,7 @@ class Card extends React.PureComponent {
 
           return (
             <React.Fragment>
-              <Spring native to={style} immediate={active}>
+              <Spring native to={style}>
                 {({ y, shadow, scale }) => (
                   <animated.div
                     className="draggable card"
