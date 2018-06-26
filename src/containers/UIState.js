@@ -7,6 +7,8 @@ export const uiState = createStore({
   mouseY: 0,
   pos: null,
   isPressed: false,
+  initialCol: null,
+  hoveredCol: null,
   handleMouseDown: (pos, pressY, { pageX, pageY }) => {
     return state => ({
       initialDeltaY: pageY - pressY,
@@ -14,6 +16,7 @@ export const uiState = createStore({
       mouseY: pressY,
       pageX: 0,
       pos: pos,
+      initialCol: pos.category,
       isPressed: true
     });
   },
@@ -21,6 +24,11 @@ export const uiState = createStore({
     return state => ({
       pageX: x,
       mouseY: y
+    });
+  },
+  updateHovered: id => {
+    return state => ({
+      hoveredCol: id
     });
   },
   getCoords: (column, { left, right, top, bottom }) => {

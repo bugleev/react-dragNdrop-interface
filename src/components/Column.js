@@ -1,7 +1,8 @@
 import React from "react";
 import { UICard } from "./Card";
-
+import { Subscribe, subscribe } from "react-contextual";
 import { store } from "../containers/Store";
+import { order } from "../containers/Order";
 import { uiState } from "../containers/UIState";
 
 export default class Column extends React.Component {
@@ -10,35 +11,30 @@ export default class Column extends React.Component {
     this.column = React.createRef();
   }
   state = {
-    order: [],
     class: ""
   };
 
-  shouldComponentUpdate(prevState, nextProps) {
-    //console.log(prevState, nextProps);
+  shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
-
+  componentWillUpdate() {}
+  componentWillMount() {}
   componentDidMount() {
-    const remoteState = store.getState();
-    const cardOrder = remoteState.cards.filter(
+    const cardOrder = this.props.cards.filter(
       el => el.category === this.props.category
     );
+    store.getState().updateOrder(this.props.category, cardOrder);
     uiState
       .getState()
       .getCoords(
         this.props.category,
         this.column.current.getBoundingClientRect()
       );
-
-    this.setState({
-      order: cardOrder
-    });
   }
   componentWillUnmount() {}
   populateIds = () => {
     let arr = [];
-    this.state.order.forEach(el => arr.push(el.id));
+    store.getState()[this.props.category].forEach(el => arr.push(el.id));
     return arr;
   };
 
@@ -51,64 +47,89 @@ export default class Column extends React.Component {
     return _arr;
   };
   handleMouseLeave = () => {
+    this.state.class && this.setState({ class: "" });
     const remoteUi = uiState.getState();
+    const remoteOrder = store.getState()[this.props.category];
     if (remoteUi.isPressed) {
       console.log("leaving", this.props);
-      if (this.state.order.indexOf(remoteUi.pos) === -1) {
+      if (remoteOrder.indexOf(remoteUi.pos) === -1) {
         this.state.class && this.setState({ class: "" });
+        // remoteUi.handleMouseUp();
       }
     }
+  };
+  clearClass = () => {
+    //this.state.class && this.setState({ class: "" });
+    !this.state.class && this.setState({ class: "insert" });
+    // remoteUi.handleMouseUp();
   };
   handleMouseMove = (pageX, pageY) => {
     const remoteUi = uiState.getState();
     if (remoteUi.isPressed) {
-      // if (this.state.order.indexOf(remoteUi.pos) === -1) {
-      //   !this.state.class && this.setState({ class: "insert" });
-      // }
+      if (store.getState()[this.props.category].indexOf(remoteUi.pos) === -1) {
+        //!this.state.class && this.setState({ class: "insert" });
+      }
+      const remoteOrder = store.getState()[this.props.category];
       const currentRow = this.clamp(
         Math.round((pageY - remoteUi.initialDeltaY) / 165),
         0,
-        this.state.order.length - 1
+        remoteOrder.length - 1
       );
-
-      let newOrder = this.state.order;
+      let newOrder = [...store.getState()[this.props.category]];
       //console.log("moving", this.props);
       if (
-        currentRow !== this.state.order.indexOf(remoteUi.pos) &&
-        this.state.order.indexOf(remoteUi.pos) !== -1
+        currentRow !== remoteOrder.indexOf(remoteUi.pos) &&
+        remoteOrder.indexOf(remoteUi.pos) !== -1
       ) {
         newOrder = this.reinsert(
-          this.state.order,
-          this.state.order.indexOf(remoteUi.pos),
+          remoteOrder,
+          remoteOrder.indexOf(remoteUi.pos),
           currentRow
         );
-        this.setState({ order: newOrder });
+        store.getState().updateOrder(this.props.category, newOrder);
       } else {
-        if (this.state.order.indexOf(remoteUi.pos) === -1) {
-          store.getState().updateCards(remoteUi.pos.id, this.props.category);
+        if (remoteOrder.indexOf(remoteUi.pos) === -1) {
+          //this.props.updateCards(remoteUi.pos.id, this.props.category);
         }
       }
     }
   };
   render() {
-    const { order } = this.state;
+    //console.log("rendering!", store.getState());
     return (
-      <div
-        className={`column ${this.state.class}`}
-        onMouseLeave={this.handleMouseLeave}
-        ref={this.column}
-      >
-        <p className="field-text">
-          {this.props.name}
-          <span>({order.length})</span>
-        </p>
-
-        <div>
-          {order.map((el, i) => (
-            <UICard key={i} ids={this.populateIds()} cardInfo={el} yOrder={i} />
-          ))}
-        </div>
-      </div>
+      <Subscribe to={store}>
+        {props => {
+          const renderOrder = props[this.props.category];
+          return (
+            <div
+              className={`column ${
+                props.hoveredCol === this.props.category ? "insert" : ""
+              }`}
+              onMouseLeave={this.handleMouseLeave}
+              ref={this.column}
+            >
+              <p className="field-text">
+                {this.props.name}
+                <span>({renderOrder && renderOrder.length})</span>
+              </p>
+              <div>
+                {renderOrder &&
+                  renderOrder.map((el, i) => {
+                    //console.log("loop[ing", renderOrder);
+                    return (
+                      <UICard
+                        key={i}
+                        ids={this.populateIds()}
+                        cardInfo={el}
+                        yOrder={i}
+                      />
+                    );
+                  })}
+              </div>
+            </div>
+          );
+        }}
+      </Subscribe>
     );
   }
 }

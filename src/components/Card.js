@@ -38,19 +38,17 @@ class Card extends React.Component {
           x: pageX,
           y: mouseY,
           scale: 1.1,
-          shadow: 16,
-          zIndex: 99
+          shadow: 16
         }
       : {
           x: 0,
           y: yOrder * 165,
           scale: 1,
-          shadow: 1,
-          zIndex: 10
+          shadow: 1
         };
     return (
       <Spring native immediate={active} to={style}>
-        {({ x, y, shadow, scale, zIndex }) => (
+        {({ x, y, shadow, scale }) => (
           <animated.div
             className="draggable card"
             id={`${id}`}

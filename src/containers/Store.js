@@ -5,8 +5,8 @@ export const store = createStore({
   cards: data.cards,
   modalData: null,
   modalOpen: false,
+  hoveredCol: null,
   updateCards: (id, category) => {
-    console.log("updating");
     return state => {
       const newCards = [...state.cards];
       newCards.forEach(el => {
@@ -14,6 +14,19 @@ export const store = createStore({
       });
       return {
         cards: newCards
+      };
+    };
+  },
+  updateHovered: id => {
+    return state => ({
+      hoveredCol: id
+    });
+  },
+  updateOrder: (id, newOrder) => {
+    //console.log("updating order", id, newOrder);
+    return state => {
+      return {
+        [id]: newOrder
       };
     };
   }
