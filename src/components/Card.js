@@ -1,38 +1,60 @@
 import React from "react";
 import { Spring, animated, interpolate } from "react-spring";
 import { subscribe } from "react-contextual";
-import { uiState } from "../containers/UIState";
+import { uiState, dataState } from "state";
+import { isMobile } from "utilities";
 
 export const UICard = subscribe(uiState)(props => <Card uiProps={props} />);
 
 class Card extends React.Component {
+  getNeighbours = card => {
+    const remoteUi = this.props.uiProps;
+    const remoteData = dataState.getState();
+    const currentId = remoteData[remoteUi.initialCol].indexOf(card);
+    return [currentId + 1, currentId, currentId - 1];
+  };
   shouldComponentUpdate(prevProps, nextProps) {
+    const remoteUi = prevProps.uiProps;
+    // update only current card and two neighbours on reordering
     if (
-      prevProps.uiProps.ids &&
-      prevProps.uiProps.pos &&
-      prevProps.uiProps.ids.indexOf(prevProps.uiProps.pos.id) !== -1
+      remoteUi.isPressed &&
+      remoteUi.updateCards === true &&
+      remoteUi.cardInfo.category === remoteUi.initialCol
+    ) {
+      const range = this.getNeighbours(remoteUi.currentCard);
+      const currentId = this.props.uiProps.ids.indexOf(
+        this.props.uiProps.cardInfo.id
+      );
+      return range.indexOf(currentId) !== -1;
+    }
+    // update on drop
+    if (
+      !remoteUi.isPressed &&
+      remoteUi.drop &&
+      remoteUi.cardInfo.category === remoteUi.initialCol
     ) {
       return true;
-    } else return false;
+    }
+    //update only pressed card
+    if (remoteUi.currentCard === remoteUi.cardInfo) {
+      return true;
+    }
+    return false;
   }
-  componentWillUpdate() {
-    //console.log("updating", this.props.uiProps.cardInfo.id);
-  }
-  handleMouseEnter = () => {
-    console.log("entering");
-  };
 
   render() {
     const {
+      animate,
       cardInfo,
       yOrder,
       isPressed,
       mouseY,
       pageX,
-      pos
+      currentCard
     } = this.props.uiProps;
     const { data, id } = cardInfo;
-    const active = cardInfo === pos && isPressed;
+    const active = cardInfo === currentCard && isPressed;
+    const mobileOffset = isMobile() ? (window.screen.availWidth - 220) / 2 : 0;
     const style = active
       ? {
           x: pageX,
@@ -41,21 +63,29 @@ class Card extends React.Component {
           shadow: 16
         }
       : {
-          x: 0,
+          x: mobileOffset,
           y: yOrder * 165,
           scale: 1,
           shadow: 1
         };
     return (
-      <Spring native immediate={active} to={style}>
+      <Spring native immediate={animate ? active : true} to={style}>
         {({ x, y, shadow, scale }) => (
           <animated.div
             className="draggable card"
             id={`${id}`}
             onMouseDown={uiState
               .getState()
-              .handleMouseDown.bind(null, cardInfo, yOrder * 165)}
-            onMouseUp={uiState.getState().handleMouseUp}
+              .handleMouseDown.bind(null, cardInfo, yOrder * 165, {
+                type: "desktop",
+                offset: 0
+              })}
+            onTouchStart={uiState
+              .getState()
+              .handleMouseDown.bind(null, cardInfo, yOrder * 165, {
+                type: "mobile",
+                offset: mobileOffset
+              })}
             style={{
               boxShadow: interpolate(
                 shadow,

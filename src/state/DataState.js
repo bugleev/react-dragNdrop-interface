@@ -1,11 +1,12 @@
 import { createStore } from "react-contextual";
-import * as data from "../data.json";
+import * as data from "data.json";
 
-export const store = createStore({
+const dataState = createStore({
   cards: data.cards,
   modalData: null,
   modalOpen: false,
   hoveredCol: null,
+  longestCol: null,
   updateCards: (id, category) => {
     return state => {
       const newCards = [...state.cards];
@@ -23,11 +24,20 @@ export const store = createStore({
     });
   },
   updateOrder: (id, newOrder) => {
-    //console.log("updating order", id, newOrder);
     return state => {
+      let i = 1;
+      let length = 0;
+      for (let key in state) {
+        if (key <= 5) {
+          length = state[key].length > length ? state[key].length : length;
+          i++;
+        }
+      }
       return {
-        [id]: newOrder
+        [id]: newOrder,
+        longestCol: length
       };
     };
   }
 });
+export default dataState;
