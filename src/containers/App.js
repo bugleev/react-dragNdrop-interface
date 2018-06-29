@@ -31,7 +31,9 @@ class App extends React.Component {
   }
   componentWillUnmount() {
     window.removeEventListener("mousemove", this.handleMouseMove);
-    window.addEventListener("mouseup", this.handleMouseUp);
+    window.removeEventListener("mouseup", this.handleMouseUp);
+    window.removeEventListener("touchmove", this.handleTouchMove);
+    window.removeEventListener("touchend", this.handleMouseUp);
   }
 
   handleTouchMove = e => {
