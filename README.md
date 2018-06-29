@@ -28,7 +28,8 @@ npm i
 * Запустить:
 
 ```bash
-npm start```
+npm start
+```
 
 * Сделать production билд:
 
