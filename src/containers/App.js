@@ -5,14 +5,21 @@ import { isMobile, checkBoundaries } from "utilities";
 import { dataState, uiState } from "state";
 import "styles.css";
 
+const columns = [
+  "Согласование",
+  "В ожидании",
+  "Разработка",
+  "Тестирование",
+  "Готово"
+];
+
 class App extends React.Component {
   constructor(props) {
     super(props);
-    for (let i = 1; i < 6; i++) {
+    for (let i = 1; i <= columns.length; i++) {
       this[`col_${i}`] = React.createRef();
     }
   }
-
   componentDidMount() {
     window.addEventListener("load", this.getColumnSizes);
     window.addEventListener("touchmove", this.handleTouchMove, {
@@ -34,7 +41,6 @@ class App extends React.Component {
       this.handleMouseMove(e.touches[0]);
     }
   };
-
   handleMouseUp = () => {
     document.body.classList.remove("no-select");
     const remoteUi = uiState.getState();
@@ -109,17 +115,19 @@ class App extends React.Component {
     }
     remoteUi.setColumnsLoaded();
   };
-
   render() {
     return (
       <Provider store={dataState}>
         <Provider store={uiState}>
           <div className="container">
-            <Column name="Согласование" category="1" ref={this.col_1} />
-            <Column name="В ожидании" category="2" ref={this.col_2} />
-            <Column name="Разработка" category="3" ref={this.col_3} />
-            <Column name="Тестирование" category="4" ref={this.col_4} />
-            <Column name="Готово" category="5" ref={this.col_5} />
+            {columns.map((column, id) => (
+              <Column
+                name={column}
+                key={column}
+                category={`${id + 1}`}
+                ref={this[`col_${id + 1}`]}
+              />
+            ))}
           </div>
         </Provider>
       </Provider>
