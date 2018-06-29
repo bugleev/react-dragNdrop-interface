@@ -25,7 +25,7 @@ const uiState = createStore({
           : e.pageY - pressY,
       initialDeltaX: mobile.type === "mobile" ? e.touches[0].pageX : e.pageX,
       mouseY: pressY,
-      pageX: mobile.type === "mobile" ? mobile.offset : 0,
+      pageX: mobile.offset,
       currentCard: currentCard,
       initialCol: currentCard.category,
       isPressed: true
@@ -49,8 +49,12 @@ const uiState = createStore({
         id: column,
         left,
         right,
-        top: isMobile() ? top + window.scrollY : top,
-        bottom: isMobile() ? bottom + window.scrollY : bottom
+        top:
+          isMobile() || window.innerWidth < 1100 ? top + window.scrollY : top,
+        bottom:
+          isMobile() || window.innerWidth < 1100
+            ? bottom + window.scrollY
+            : bottom
       }
     });
   },
@@ -61,7 +65,7 @@ const uiState = createStore({
     pageX: 0
   }),
 
-  columns: () => state => ({
+  setColumnsLoaded: () => state => ({
     columnsLoaded: true
   }),
   disableAnimation: () => state => ({

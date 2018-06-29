@@ -54,7 +54,11 @@ class Card extends React.Component {
     } = this.props.uiProps;
     const { data, id } = cardInfo;
     const active = cardInfo === currentCard && isPressed;
-    const mobileOffset = isMobile() ? (window.screen.availWidth - 220) / 2 : 0;
+    const mobileOffset = isMobile()
+      ? (window.screen.availWidth - 220) / 2
+      : window.innerWidth < 1100
+        ? (window.innerWidth - 220) / 2
+        : 0;
     const style = active
       ? {
           x: pageX,
@@ -78,7 +82,7 @@ class Card extends React.Component {
               .getState()
               .handleMouseDown.bind(null, cardInfo, yOrder * 165, {
                 type: "desktop",
-                offset: 0
+                offset: mobileOffset
               })}
             onTouchStart={uiState
               .getState()

@@ -1,7 +1,5 @@
 import * as React from "react";
-import Backdrop from "../components/Backdrop";
 import Column from "../components/Column";
-import Modal from "../components/Modal";
 import { Provider } from "react-contextual";
 import "styles.css";
 import { isMobile } from "utilities";
@@ -80,7 +78,7 @@ class App extends React.Component {
     for (let column of columnData) {
       const { left, right, top, bottom, id } = column;
       if (pageX > left && pageX < right && pageY > top && pageY < bottom) {
-        console.log([left, right, top, bottom, id], pageY);
+        //console.log([left, right, top, bottom, id], pageY);
         return id;
       }
     }
@@ -103,7 +101,7 @@ class App extends React.Component {
         );
       }
     }
-    remoteUi.columns();
+    remoteUi.setColumnsLoaded();
   };
 
   handleMouseMove = ({ pageX, pageY }) => {
@@ -111,9 +109,11 @@ class App extends React.Component {
     const remoteData = dataState.getState();
     const mouseY = pageY - remoteUi.initialDeltaY;
     let mouseX = pageX - remoteUi.initialDeltaX;
-    if (isMobile()) {
-      mouseX += (window.screen.availWidth - 220) / 2;
-    }
+    mouseX = isMobile()
+      ? (mouseX += (window.screen.availWidth - 220) / 2)
+      : window.innerWidth < 1100
+        ? (mouseX += (window.innerWidth - 220) / 2)
+        : mouseX;
     const columnID = this.checkBoundaries(pageX, pageY);
     columnID &&
       this[`col_${columnID}`].current.handleMouseMove(pageX, pageY, columnID);

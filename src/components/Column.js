@@ -75,7 +75,7 @@ export default class Column extends React.Component {
             <div
               style={{
                 minHeight: `${
-                  mobile
+                  mobile || window.innerWidth < 1100
                     ? renderOrder
                       ? renderOrder.length * 200
                       : 300

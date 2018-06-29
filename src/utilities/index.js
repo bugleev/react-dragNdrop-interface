@@ -10,9 +10,9 @@ const reinsert = (arr, from, to) => {
 const isMobile = () => {
   return (
     (typeof window.orientation !== "undefined" &&
-      window.screen.availWidth <= 1024) ||
+      window.screen.availWidth <= 520) ||
     (navigator.userAgent.indexOf("IEMobile") !== -1 &&
-      window.screen.availWidth < 1024)
+      window.screen.availWidth < 520)
   );
 };
 export { clamp, reinsert, isMobile };

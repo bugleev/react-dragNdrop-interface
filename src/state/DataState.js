@@ -3,8 +3,6 @@ import * as data from "data.json";
 
 const dataState = createStore({
   cards: data.cards,
-  modalData: null,
-  modalOpen: false,
   hoveredCol: null,
   longestCol: null,
   updateCards: (id, category) => {
@@ -28,7 +26,7 @@ const dataState = createStore({
       let i = 1;
       let length = 0;
       for (let key in state) {
-        if (key <= 5) {
+        if (key <= i) {
           length = state[key].length > length ? state[key].length : length;
           i++;
         }
