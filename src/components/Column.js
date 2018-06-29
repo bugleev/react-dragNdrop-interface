@@ -10,12 +10,6 @@ export default class Column extends React.Component {
     this.column = React.createRef();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-  componentWillUpdate() {
-    console.log("updating columnd", this.props.category);
-  }
   componentDidMount() {
     const remoteData = dataState.getState();
     const cardOrder = remoteData.cards.filter(
@@ -35,7 +29,6 @@ export default class Column extends React.Component {
   populateIds = () => {
     let arr = [];
     dataState.getState()[this.props.category].forEach(el => arr.push(el.id));
-
     return arr;
   };
   handleMouseMove = (pageX, pageY) => {
@@ -48,7 +41,6 @@ export default class Column extends React.Component {
         remoteOrder.length - 1
       );
       let newOrder = [...dataState.getState()[this.props.category]];
-
       if (
         currentRow !== remoteOrder.indexOf(remoteUi.currentCard) &&
         remoteOrder.indexOf(remoteUi.currentCard) !== -1
@@ -59,12 +51,10 @@ export default class Column extends React.Component {
           currentRow
         );
         dataState.getState().updateOrder(this.props.category, newOrder);
-
         uiState.getState().triggerUpdate();
       }
     }
   };
-
   render() {
     const mobile = isMobile();
     return (

@@ -31,8 +31,6 @@ const uiState = createStore({
       isPressed: true
     });
   },
-  handleTouchStart: (key, pressLocation, e) =>
-    this.handleMouseDown(key, pressLocation, e.touches[0]),
   updateCoords: (x, y) => state => ({
     pageX: x,
     mouseY: y

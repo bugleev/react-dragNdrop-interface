@@ -15,4 +15,18 @@ const isMobile = () => {
       window.screen.availWidth < 520)
   );
 };
-export { clamp, reinsert, isMobile };
+const checkBoundaries = (pageX, pageY, remoteUi) => {
+  const columnData = [];
+  for (let key in remoteUi) {
+    if (key.match(/col_./g)) {
+      columnData.push(remoteUi[key]);
+    }
+  }
+  for (let column of columnData) {
+    const { left, right, top, bottom, id } = column;
+    if (pageX > left && pageX < right && pageY > top && pageY < bottom) {
+      return id;
+    }
+  }
+};
+export { clamp, reinsert, isMobile, checkBoundaries };
