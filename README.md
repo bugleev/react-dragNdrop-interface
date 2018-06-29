@@ -8,7 +8,7 @@
   </div>
 <h3 align="center">Быстрая ссылка</h3>
 
-Здесь ссылка на продакшн билд (index.html, bundle.js, bundle.css) - [Google Drive](https://drive.google.com/open?id=1E-m1lbb8KC0DgaJFmBQ8KEBiBa66Dea7). 
+Здесь ссылка на продакшн билд (index.html, bundle.js, bundle.css) - [Google Drive](https://drive.google.com/open?id=1hL9sKlwFcBgbutiI_gUcI5kuys4e5goE). 
 
 <h3 align="center">Описание</h3>
 
