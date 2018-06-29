@@ -12,7 +12,7 @@
 
 <h3 align="center">Описание</h3>
 
-Выполнено на стеке React+SASS. Бойлерплейт - [create-react-app](https://github.com/facebook/create-react-app). Интерфейс использует внешний стейт(точнее два стейта: для данных и для UI, в отдельных файлах), работа с ним происходит с помощью маленькой библиотеки (<3кБ) [react-contextual](https://github.com/drcmda/react-contextual) на основе Context API. Сам драг-энд-дроп реализован через библиотеку [react-spring](https://github.com/drcmda/react-spring), без использования нативных API (droppable и т.д.).
+Выполнено на стеке React+SASS. Бойлерплейт - [create-react-app](https://github.com/facebook/create-react-app). Интерфейс использует внешний стейт(точнее два стейта: для данных и для UI, в отдельных файлах), работа с ним происходит с помощью маленькой библиотеки (<3кБ) [react-contextual](https://github.com/drcmda/react-contextual) на основе Context API. Сам драг-энд-дроп интерфейс реализован через библиотеку [react-spring](https://github.com/drcmda/react-spring), без использования нативных API (droppable и т.д.), поэтому работает на мобильных устройствах.
 
 <h3 align="center">Как запустить</h3>
 
