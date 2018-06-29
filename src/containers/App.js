@@ -36,6 +36,7 @@ class App extends React.Component {
   };
 
   handleMouseUp = () => {
+    document.body.classList.remove("no-select");
     const remoteUi = uiState.getState();
     const remoteData = dataState.getState();
     if (remoteData.hoveredCol) {
@@ -62,6 +63,7 @@ class App extends React.Component {
     columnID &&
       this[`col_${columnID}`].current.handleMouseMove(pageX, pageY, columnID);
     if (remoteUi.isPressed) {
+      document.body.classList.add("no-select");
       if (!columnID) {
         remoteData.updateHovered(null);
         return;

@@ -56,12 +56,14 @@ const uiState = createStore({
       }
     });
   },
-  handleMouseUp: () => state => ({
-    isPressed: false,
-    initialDeltaY: 0,
-    initialDeltaX: 0,
-    pageX: 0
-  }),
+  handleMouseUp: () => {
+    return state => ({
+      isPressed: false,
+      initialDeltaY: 0,
+      initialDeltaX: 0,
+      pageX: 0
+    });
+  },
 
   setColumnsLoaded: () => state => ({
     columnsLoaded: true
